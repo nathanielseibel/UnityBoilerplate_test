@@ -1,7 +1,7 @@
 # Unity WebGL CI/CD with GitHub Actions
 
 WebGL published here https://nathanielseibel.github.io/UnityBoilerplate_test/
-
+  
 # Setup Steps:
 
 - [x] I understand FERPA laws. If I make the repository public, I will remove any student information, or I am waiving the requirement to remove student information. Otherwise, I am making the repository private;
