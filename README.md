@@ -1,6 +1,6 @@
 # Unity WebGL CI/CD with GitHub Actions
 
-WebGL published here (EDIT IT!) https://YOUR_GH_USERNAME.github.io/YOUR_REPO_NAME/
+WebGL published here (EDIT IT!) https://nathanielseibel.github.io/UnityBoilerplate_test/
 
 # Setup Steps:
 
@@ -20,7 +20,7 @@ WebGL published here (EDIT IT!) https://YOUR_GH_USERNAME.github.io/YOUR_REPO_NAM
 - [ ] I saw the GitHub Actions build the project;
 - [ ] I changed the `Settings` > `Pages` > `Source` to `gh-pages` branch;
 - [ ] I saw the GitHub Actions deploy the project to the `gh-pages` branch;
-- [ ] I can open the web build in the browser at the url: https://YOUR_GH_USERNAME.github.io/YOUR_REPO_NAME/
+- [ ] I can open the web build in the browser at the url: https://nathanielseibel.github.io/UnityBoilerplate_test/
 - [ ] I have read the https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow and understand the Gitflow workflow;
 - [ ] I understand that I should create a new branch for each feature or fix I am working on;
 - [ ] I have read the `.github/workflows/main.yml` file and understand how the GitHub Actions are working;
