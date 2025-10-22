@@ -12,15 +12,12 @@ public class PlayerBehavior : MonoBehaviour
         var vel = rb.velocity;
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            rb.velocity = new Vector3(3f, vel.y, vel.z);
+            rb.velocity = new Vector3(7f, vel.y, vel.z);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rb.velocity = new Vector3(-3f, vel.y, vel.z);
+            rb.velocity = new Vector3(-7f, vel.y, vel.z);
         }
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.velocity = new Vector3(0, 5f, 0);
-        }
+       
     }
 }

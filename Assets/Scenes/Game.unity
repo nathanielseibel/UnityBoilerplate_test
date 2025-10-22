@@ -579,12 +579,12 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 455812899}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Radius: 0.73279333
+  m_Height: 1.051887
+  m_Direction: 0
+  m_Center: {x: 0.0076504587, y: 0.024767509, z: 0}
 --- !u!23 &455812901
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -685,7 +685,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 72
+  m_Constraints: 124
   m_CollisionDetection: 0
 --- !u!136 &557900493
 CapsuleCollider:
@@ -698,9 +698,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Height: 1.0678042
+  m_Direction: 0
+  m_Center: {x: -0.0018102189, y: 0, z: 0}
 --- !u!23 &557900494
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -759,7 +759,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557900491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8004, y: -1.4419, z: 0}
+  m_LocalPosition: {x: -2.52, y: -1.5, z: 0}
   m_LocalScale: {x: 4.7522535, y: 0.45926967, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
