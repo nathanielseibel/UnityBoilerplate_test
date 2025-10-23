@@ -21,7 +21,7 @@ public class BrickBehavior : MonoBehaviour
         transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         //If the brick goes off the bottom of the screen, destroy it
-        if (transform.position.y < -10.0f)
+        if (transform.position.y < -15.0f)
         {
             Destroy(gameObject);
         }
