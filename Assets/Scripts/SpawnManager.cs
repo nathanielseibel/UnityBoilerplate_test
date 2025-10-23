@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
 
     // Time tracking for spawning
     private float spawnTimer = 0f;
-    private float spawnInterval = 2f; // Spawn regular bricks every X seconds
+    private float spawnInterval = 1f; // Spawn regular bricks every X seconds
 
     // Tanky brick tracking
     private float tankySpawnTimer = 0f;
