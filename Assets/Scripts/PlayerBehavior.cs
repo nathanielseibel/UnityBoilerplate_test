@@ -9,18 +9,18 @@ public class PlayerBehavior : MonoBehaviour
     void Update()
     {
         var rb = GetComponent<Rigidbody>();
-        var vel = rb.velocity;
+        var vel = rb.linearVelocity;
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            rb.velocity = new Vector3(3f, vel.y, vel.z);
+            rb.linearVelocity = new Vector3(3f, vel.y, vel.z);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            rb.velocity = new Vector3(-3f, vel.y, vel.z);
+            rb.linearVelocity = new Vector3(-3f, vel.y, vel.z);
         }
         if (Input.GetKey(KeyCode.Space))
         {
-            rb.velocity = new Vector3(0, 5f, 0);
+            rb.linearVelocity = new Vector3(0, 5f, 0);
         }
     }
 }
