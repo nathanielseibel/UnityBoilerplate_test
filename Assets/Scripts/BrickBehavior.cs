@@ -3,7 +3,8 @@ using UnityEngine;
 public class BrickBehavior : MonoBehaviour
 {
 
-
+    //Brick hit points
+    [SerializeField] private int hitPoints = 1;
 
     // Speed at which the brick moves down the screen
     public float speed = 1.0f;

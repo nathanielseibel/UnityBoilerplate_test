@@ -11,12 +11,12 @@ public class SpawnManager : MonoBehaviour
 
     // Tanky brick tracking
     private float tankySpawnTimer = 0f;
-    private float tankySpawnInterval = 5f; // Spawn tanky bricks every X seconds
+    private float tankySpawnInterval = 2f; // Spawn tanky bricks every X seconds
     private int maxTankyBricks = 5;
 
     // Speed brick tracking
     private float speedSpawnTimer = 0f;
-    private float speedSpawnInterval = 2f; // Spawn speed bricks every 2 seconds after a tanky brick
+    private float speedSpawnInterval = 1f; // Spawn speed bricks every 2 seconds after a tanky brick
     private bool shouldSpawnSpeedBrick = false;
 
     private void Start()
