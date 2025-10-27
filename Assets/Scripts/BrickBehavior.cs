@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class BrickBehavior : MonoBehaviour
 {
+    private int scoreValue;
 
-    //Brick hit points
-    [SerializeField] private int hitPoints = 1;
+            
+
+//Brick hit points
+[SerializeField] private int hitPoints = 1;
 
     // Speed at which the brick moves down the screen
     public float speed = 1.0f;
@@ -12,7 +15,35 @@ public class BrickBehavior : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // Set score value based on the brick's tag
+        if (gameObject.CompareTag("Brick"))
+        {
+            scoreValue = 50; // Regular brick
+        }
+        else if (gameObject.CompareTag("TankyBrick"))
+        {
+            scoreValue = 250; // Tanky brick
+        }
+        else if (gameObject.CompareTag("SuperTankyBrick"))
+        {
+            scoreValue = 500; // Super Tanky brick
+        }
+        else if (gameObject.CompareTag("SpeedBrick"))
+        {
+            scoreValue = 100; // Speed brick
+        }
+        else if (gameObject.CompareTag("PowerUp"))
+        {
+            scoreValue = 200; // Power ups
+        }
+        else if (gameObject.CompareTag("ReboundBomb"))
+        {
+            scoreValue = 100; // Rebound Bomb
+        }
+        else
+        {
+            scoreValue = 10; // Default value
+        }
     }
 
     // Update is called once per frame
@@ -74,6 +105,15 @@ public class BrickBehavior : MonoBehaviour
             //set speed to 1 for both bricks
             speed = 1.0f;
 
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Add score when brick is destroyed
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.AddScore(scoreValue);
         }
     }
 

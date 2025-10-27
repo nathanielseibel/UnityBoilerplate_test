@@ -14,6 +14,11 @@ public class SpawnManager : MonoBehaviour
     private float tankySpawnInterval = 2f; // Spawn tanky bricks every X seconds
     private int maxTankyBricks = 5;
 
+    // Tanky brick tracking
+    private float superTankySpawnTimer = 0f;
+    private float superTankySpawnInterval = 2f; // Spawn super tanky bricks every X seconds
+    private int maxSuperTankyBricks = 3;
+
     // Speed brick tracking
     private float speedSpawnTimer = 0f;
     private float speedSpawnInterval = 1f; // Spawn speed bricks every 2 seconds after a tanky brick
@@ -85,6 +90,32 @@ public class SpawnManager : MonoBehaviour
                     // Trigger speed brick spawning
                     shouldSpawnSpeedBrick = true;
                     speedSpawnTimer = 0f; // Reset the timer
+                }
+            }
+        }
+
+        // === Super Tanky Brick Spawning ===
+        tankySpawnTimer += Time.deltaTime;
+
+        if (tankySpawnTimer >= tankySpawnInterval)
+        {
+            tankySpawnTimer = 0f;
+
+            // Count how many tanky bricks currently exist
+            int superTankyBrickCount = GameObject.FindGameObjectsWithTag("SuperTankyBrick").Length;
+
+            // Only spawn if we have less than the max
+            if (superTankyBrickCount < maxSuperTankyBricks)
+            {
+                // Pick a random spawner
+                int randomIndex = Random.Range(0, brickSpawners.Length);
+                BrickSpawner selectedSpawner = brickSpawners[randomIndex];
+
+                // Spawn tanky brick from the selected spawner
+                if (selectedSpawner != null)
+                {
+                    selectedSpawner.SpawnSuperTankyBrickHere();
+                    Debug.Log($"Spawned super tanky brick. Total: {superTankyBrickCount + 1}");
                 }
             }
         }

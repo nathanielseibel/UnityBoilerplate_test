@@ -6,6 +6,8 @@ public class BrickSpawner : MonoBehaviour
     [SerializeField] private GameObject brickPrefab;
     // Prefab of a tanky brick to spawn
     [SerializeField] private GameObject tankyBrickPrefab;
+    // Prefab of a super tanky brick to spawn
+    [SerializeField] private GameObject superTankyBrickPrefab;
     // Prefab of a speed brick to spawn
     [SerializeField] private GameObject speedBrickPrefab;
 
@@ -20,6 +22,11 @@ public class BrickSpawner : MonoBehaviour
     public void SpawnTankyBrickHere()
     {
         Instantiate(tankyBrickPrefab, transform.position, Quaternion.identity);
+    }
+
+    public void SpawnSuperTankyBrickHere()
+    {
+        Instantiate(superTankyBrickPrefab, transform.position, Quaternion.identity);
     }
 
     public void SpawnSpeedBrickHere()
