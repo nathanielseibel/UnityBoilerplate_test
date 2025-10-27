@@ -8,6 +8,7 @@ TagManager:
   - spawner
   - TankyBrick
   - SpeedBrick
+  - SuperTankyBrick
   layers:
   - Default
   - TransparentFX
