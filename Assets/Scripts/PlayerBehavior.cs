@@ -4,19 +4,39 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    
-    void Update()
+    public static PlayerBehavior Instance;
+    Rigidbody rb;
+    BoxCollider col;
+    float speed = 20f;
+    public float rightScreenEdge;
+    public float leftScreenEdge;
+
+
+    void Awake()
     {
-        var rb = GetComponent<Rigidbody>();
-        var vel = rb.velocity;
-        if (Input.GetKey(KeyCode.RightArrow))
+        Instance = this;
+
+    }
+
+    void Start()
+    {
+       var  rb = GetComponent<Rigidbody>();
+       var  col = GetComponent<BoxCollider>();
+    }
+
+    void FixedUpdate()
+    {
+        
+        float moveInput = Input.GetAxis("Horizontal");
+        transform.Translate(Vector3.right*moveInput*speed*Time.deltaTime);
+        if (transform.position.x < leftScreenEdge)
         {
-            rb.velocity = new Vector3(10f, vel.y, vel.z);
+            transform.position = new Vector3(leftScreenEdge, transform.position.y);
         }
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (transform.position.x > rightScreenEdge)
         {
-            rb.velocity = new Vector3(-10f, vel.y, vel.z);
+            transform.position = new Vector3(rightScreenEdge, transform.position.y);
         }
-       
     }
 }
+
