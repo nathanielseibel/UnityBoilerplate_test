@@ -9,6 +9,8 @@ TagManager:
   - Brick
   - PowerUp
   - Base
+  - Paddle
+  - Raft
   layers:
   - Default
   - TransparentFX
