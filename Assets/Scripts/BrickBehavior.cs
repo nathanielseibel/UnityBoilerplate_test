@@ -4,13 +4,12 @@ public class BrickBehavior : MonoBehaviour
 {
     private int scoreValue;
 
-            
+    public float moveDistance = 1f; // How far to move down each time
+    public float moveInterval = 1.5f; // Time between moves in seconds
 
-//Brick hit points
-[SerializeField] private int hitPoints = 1;
+    private float moveTimer = 0f;
 
-    // Speed at which the brick moves down the screen
-    public float speed = 1.0f;
+    private bool canMove = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,13 +43,38 @@ public class BrickBehavior : MonoBehaviour
         {
             scoreValue = 10; // Default value
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //The brick moves down the screen at a constant speed using the speed variable
-        transform.Translate(Vector3.down * speed * Time.deltaTime);
+        // Increment the timer
+        moveTimer += Time.deltaTime;
+
+        // Check if it's time to move
+        if (moveTimer >= moveInterval)
+        {
+            // Reset timer
+            moveTimer = 0f;
+
+            // Move the brick down
+            MoveBrickDown();
+        }
+
+        //if the brick reaches 0 on the y axis, prevent it from going further down
+        if (transform.position.y <= 0.5f)
+        {
+            Vector3 pos = transform.position;
+            pos.y = 0.5f;
+            transform.position = pos;
+        }
+
+        //if the brick goes off the top of the screen, destroy it
+        if (transform.position.y > 25)
+        {
+            Destroy(gameObject);
+        }
 
         //If the brick goes off the bottom of the screen, destroy it
         if (transform.position.y < -15.0f)
@@ -59,54 +83,38 @@ public class BrickBehavior : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void MoveBrickDown()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        // Clamp the velocity to a maximum speed
-        if (rb.linearVelocity.magnitude > 10f) // Max speed of 10
+        // Move down by the specified distance
+        if (canMove)
+        { 
+        transform.position += Vector3.down * moveDistance;
+        }
+        //check if the brick will collide with another brick in the next move
+        if (Physics.Raycast(transform.position, Vector3.down, moveDistance))
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * 10f;
+            //stop all movement, velocity
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.linearVelocity = Vector3.zero;
+            //stop calling move brick down
+            canMove = false;
         }
 
-        //if the brick changes speed, reset its velocity to match the speed variable
-        rb.linearVelocity = Vector3.down * speed;
     }
 
-    //check if this object has tag "SpeedBrick" and if so, increase its speed
-    private void Awake()
-    {
-        if (gameObject.CompareTag("SpeedBrick"))
-        {
-            speed *= 2.0f; //double the speed
-        }
-    }
-
-    //check if this object has tag "TankyBrick" and if so, half it's speed
-    private void OnEnable()
-    {
-        if (gameObject.CompareTag("TankyBrick"))
-        {
-            //constantly set speed to half every frame over and over again
-            speed *= 0.5f; //half the speed
-
-        }
-    }
-
-    //if this brick touches another brick, attach to it without setting a parent
+    //if this brick touches another brick
     private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Brick") || collision.gameObject.CompareTag("TankyBrick") || collision.gameObject.CompareTag("SpeedBrick"))
         {
-            // Attach to the other brick by setting its position relative to the other brick
-            Vector3 offset = transform.position - collision.transform.position;
-            transform.position = collision.transform.position + offset;
+            if (collision.gameObject.CompareTag("Brick") || collision.gameObject.CompareTag("TankyBrick") || collision.gameObject.CompareTag("SpeedBrick"))
+            {
+                //stop all movement, velocity
+                Rigidbody rb = GetComponent<Rigidbody>();
+                rb.linearVelocity = Vector3.zero;
 
-            //set speed to 1 for both bricks
-            speed = 1.0f;
-
+                //stop calling move brick down
+                canMove = false;
+            }
         }
-    }
 
     private void OnDestroy()
     {
