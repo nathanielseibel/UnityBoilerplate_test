@@ -98,7 +98,7 @@ public class BrickBehavior : MonoBehaviour
         {
             //stop all movement, velocity
             Rigidbody rb = GetComponent<Rigidbody>();
-            rb.linearVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
             //stop calling move brick down
             canMove = false;
         }
@@ -112,7 +112,7 @@ public class BrickBehavior : MonoBehaviour
       {
          //stop all movement, velocity
          Rigidbody rb = GetComponent<Rigidbody>();
-         rb.linearVelocity = Vector3.zero;
+         rb.velocity = Vector3.zero;
 
          //stop calling move brick down
          canMove = false;
