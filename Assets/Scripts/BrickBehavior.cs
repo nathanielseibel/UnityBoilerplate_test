@@ -32,13 +32,13 @@ public class BrickBehavior : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
 
         // Clamp the velocity to a maximum speed
-        if (rb.linearVelocity.magnitude > 10f) // Max speed of 10
+        if (rb.velocity.magnitude > 10f) // Max speed of 10
         {
-            rb.linearVelocity = rb.linearVelocity.normalized * 10f;
+            rb.velocity = rb.velocity.normalized * 10f;
         }
 
         //if the brick changes speed, reset its velocity to match the speed variable
-        rb.linearVelocity = Vector3.down * speed;
+        rb.velocity = Vector3.down * speed;
     }
 
     //check if this object has tag "SpeedBrick" and if so, increase its speed
