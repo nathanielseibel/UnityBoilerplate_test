@@ -8,6 +8,9 @@ public class SpawnManager : MonoBehaviour
     //keep track of total bricks alive
     private static int totalBricksAlive = 0;
 
+    //keep track of last spawner used
+    private int lastSpawnerIndex = -1;
+
     //plus one to total bricks alive
     public int AddToTotal()
     {
@@ -83,6 +86,22 @@ public class SpawnManager : MonoBehaviour
         Debug.Log($"Found {brickSpawners.Length} spawner(s)");
     }
 
+    private int GetRandomSpawnerIndex()
+    {
+        if (brickSpawners.Length <= 1)
+            return 0;
+
+        int newIndex;
+        do
+        {
+            newIndex = Random.Range(0, brickSpawners.Length);
+        }
+        while (newIndex == lastSpawnerIndex);
+
+        lastSpawnerIndex = newIndex;
+        return newIndex;
+    }
+
     private void Update()
     {
         // Check if we have any spawners
@@ -100,24 +119,22 @@ public class SpawnManager : MonoBehaviour
         //if total bricks alive is less than 48, spawn more bricks
         if (totalBricksAlive < 48 && spawnTimer >= spawnInterval)
         {
-            
             spawnTimer = 0f;
-        
-            //spawn a regular brick at a random spawner
-            int randomIndex = Random.Range(0, brickSpawners.Length);
+
+            //spawn a regular brick at a different spawner than last time
+            int randomIndex = GetRandomSpawnerIndex();
             brickSpawners[randomIndex].SpawnBrickHere();
             AddToTotal();
             AddToRegularBricks();
             Debug.Log("Total bricks alive: " + totalBricksAlive);
             Debug.Log("Max regular bricks: " + maxRegularBricks);
-
         }
 
         //spawn a tanky brick if under the limit
         if (totalBricksAlive < 48 && maxTankyBricks < 8 && tankySpawnTimer >= tankySpawnInterval)
         {
             tankySpawnTimer = 0f;
-            int randomTankyIndex = Random.Range(0, brickSpawners.Length);
+            int randomTankyIndex = GetRandomSpawnerIndex();
             brickSpawners[randomTankyIndex].SpawnTankyBrickHere();
             AddToTotal();
             AddToTankyBricks();
@@ -129,7 +146,7 @@ public class SpawnManager : MonoBehaviour
         if (totalBricksAlive < 48 && maxSuperTankyBricks < 4 && superTankySpawnTimer >= superTankySpawnInterval)
         {
             superTankySpawnTimer = 0f;
-            int randomSuperTankyIndex = Random.Range(0, brickSpawners.Length);
+            int randomSuperTankyIndex = GetRandomSpawnerIndex();
             brickSpawners[randomSuperTankyIndex].SpawnSuperTankyBrickHere();
             AddToTotal();
             AddToSuperTankyBricks();
@@ -141,7 +158,7 @@ public class SpawnManager : MonoBehaviour
         if (totalBricksAlive < 48 && maxSpeedBricks < 12 && speedSpawnTimer >= speedSpawnInterval)
         {
             speedSpawnTimer = 0f;
-            int randomSpeedIndex = Random.Range(0, brickSpawners.Length);
+            int randomSpeedIndex = GetRandomSpawnerIndex();
             brickSpawners[randomSpeedIndex].SpawnSpeedBrickHere();
             AddToTotal();
             AddToSpeedBricks();
