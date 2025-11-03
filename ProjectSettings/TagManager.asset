@@ -11,6 +11,7 @@ TagManager:
   - Base
   - Paddle
   - Raft
+  - Bomb
   layers:
   - Default
   - TransparentFX
