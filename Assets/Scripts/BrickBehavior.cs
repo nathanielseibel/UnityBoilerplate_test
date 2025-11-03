@@ -11,6 +11,9 @@ public class BrickBehavior : MonoBehaviour
 
     private bool canMove = true;
 
+    //get spawner manager
+    private SpawnManager spawnManager;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -104,17 +107,17 @@ public class BrickBehavior : MonoBehaviour
 
     //if this brick touches another brick
     private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.CompareTag("Brick") || collision.gameObject.CompareTag("TankyBrick") || collision.gameObject.CompareTag("SpeedBrick"))
-            {
-                //stop all movement, velocity
-                Rigidbody rb = GetComponent<Rigidbody>();
-                rb.linearVelocity = Vector3.zero;
+    {
+      if (collision.gameObject.CompareTag("Brick") || collision.gameObject.CompareTag("TankyBrick") || collision.gameObject.CompareTag("SpeedBrick"))
+      {
+         //stop all movement, velocity
+         Rigidbody rb = GetComponent<Rigidbody>();
+         rb.linearVelocity = Vector3.zero;
 
-                //stop calling move brick down
-                canMove = false;
-            }
-        }
+         //stop calling move brick down
+         canMove = false;
+      }
+    }
 
     private void OnDestroy()
     {
@@ -123,7 +126,44 @@ public class BrickBehavior : MonoBehaviour
         {
             ScoreManager.Instance.AddScore(scoreValue);
         }
-    }
 
+        //if a regular brick is destroyed, minus one from total bricks alive
+        if (spawnManager == null)
+        {
+            spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        }
+        //regular brick destroyed
+        if (gameObject.CompareTag("Brick"))
+        {
+            spawnManager.SubtractFromTotal();
+            //minus one from max regular bricks
+            spawnManager.SubtractFromRegularBricks();
+            Debug.Log("Regular Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
+        }
+        else if (gameObject.CompareTag("TankyBrick"))
+        {
+            //tank brick destroyed
+            spawnManager.SubtractFromTotal();
+            //minus one from max tanky bricks
+            spawnManager.SubtractFromTankyBricks();
+            Debug.Log("Tanky Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
+        }
+        else if (gameObject.CompareTag("SuperTankyBrick"))
+        {
+            //super tank brick destroyed
+            spawnManager.SubtractFromTotal();
+            //minus one from max super tanky bricks
+            spawnManager.SubtractFromSuperTankyBricks();
+            Debug.Log("Super Tanky Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
+        }
+        else if (gameObject.CompareTag("SpeedBrick"))
+        {
+            //speed brick destroyed
+            spawnManager.SubtractFromTotal();
+            //minus one from max speed bricks
+            spawnManager.SubtractFromSpeedBricks();
+            Debug.Log("Speed Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
+        }
+    }
 
 }

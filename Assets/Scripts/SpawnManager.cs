@@ -17,6 +17,18 @@ public class SpawnManager : MonoBehaviour
         return totalBricksAlive++;
     }
 
+    //minus one from total bricks alive
+    public int SubtractFromTotal()
+    {
+        return totalBricksAlive--;
+    }
+
+    //get total bricks alive
+    public int GetTotalBricksAlive()
+    {
+        return totalBricksAlive;
+    }
+
     // Time tracking for spawning
     private float spawnTimer = 4f;
     private float spawnInterval = 4f; // Spawn regular bricks every X seconds
@@ -26,6 +38,18 @@ public class SpawnManager : MonoBehaviour
     public int AddToRegularBricks()
     {
         return maxRegularBricks++;
+    }
+
+    //minus one from max regular bricks
+    public int SubtractFromRegularBricks()
+    {
+        return maxRegularBricks--;
+    }
+
+    //get max regular bricks
+    public int GetMaxRegularBricks()
+    {
+        return maxRegularBricks;
     }
 
     // Tanky brick tracking
@@ -40,6 +64,18 @@ public class SpawnManager : MonoBehaviour
         return maxTankyBricks++;
     }
 
+    //minus one from max tanky bricks
+    public int SubtractFromTankyBricks()
+    {
+        return maxTankyBricks--;
+    }
+
+    //Get max tanky bricks
+    public int GetMaxTankyBricks()
+    {
+        return maxTankyBricks;
+    }
+
 
     // Super Tanky brick tracking
     private float superTankySpawnTimer = 4f;
@@ -52,6 +88,18 @@ public class SpawnManager : MonoBehaviour
         return maxSuperTankyBricks++;
     }
 
+    //minus one from max super tanky bricks
+    public int SubtractFromSuperTankyBricks()
+    {
+        return maxSuperTankyBricks--;
+    }
+
+    //Get max super tanky bricks
+    public int GetMaxSuperTankyBricks()
+    {
+        return maxSuperTankyBricks;
+    }
+
     // Speed brick tracking
     private float speedSpawnTimer = 4f;
     private float speedSpawnInterval = 4f; // Spawn speed bricks every x seconds
@@ -61,6 +109,12 @@ public class SpawnManager : MonoBehaviour
     public int AddToSpeedBricks()
     {
         return maxSpeedBricks++;
+    }
+
+    //minus one from max speed bricks
+    public int SubtractFromSpeedBricks()
+    {
+        return maxSpeedBricks--;
     }
 
     //Get max speed bricks
@@ -165,5 +219,9 @@ public class SpawnManager : MonoBehaviour
             Debug.Log("Total bricks alive: " + totalBricksAlive);
             Debug.Log("Max speed bricks: " + maxSpeedBricks);
         }
+
+        //if a brick is destroyed, reduce total bricks alive
+
     }
+
 }
