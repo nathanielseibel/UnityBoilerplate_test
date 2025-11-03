@@ -99,7 +99,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2967980270083413178}
-  m_Material: {fileID: 13400000, guid: 55ceadad57a0e7c46b03145c457db3b3, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -121,7 +121,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2967980270083413178}
   serializedVersion: 5
-  m_Mass: 10
+  m_Mass: 0.1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -152,4 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5859f7e8150b15e48a4deaf44a385936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrickBehavior
-  speed: 1
+  moveDistance: 1
+  moveInterval: 1.5

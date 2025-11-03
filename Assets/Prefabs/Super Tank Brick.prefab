@@ -152,5 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5859f7e8150b15e48a4deaf44a385936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BrickBehavior
-  hitPoints: 1
-  speed: 1
+  moveDistance: 1
+  moveInterval: 1.5

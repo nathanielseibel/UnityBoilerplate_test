@@ -5,24 +5,67 @@ public class SpawnManager : MonoBehaviour
     // Array to hold all spawners in the scene
     private BrickSpawner[] brickSpawners;
 
+    //keep track of total bricks alive
+    private static int totalBricksAlive = 0;
+
+    //plus one to total bricks alive
+    public int AddToTotal()
+    {
+        return totalBricksAlive++;
+    }
+
     // Time tracking for spawning
-    private float spawnTimer = 0f;
-    private float spawnInterval = 1f; // Spawn regular bricks every X seconds
+    private float spawnTimer = 4f;
+    private float spawnInterval = 4f; // Spawn regular bricks every X seconds
+    private int maxRegularBricks = 0;
+
+    //plus one to max regular bricks
+    public int AddToRegularBricks()
+    {
+        return maxRegularBricks++;
+    }
 
     // Tanky brick tracking
-    private float tankySpawnTimer = 0f;
-    private float tankySpawnInterval = 2f; // Spawn tanky bricks every X seconds
-    private int maxTankyBricks = 5;
+    private float tankySpawnTimer = 4f;
+    private float tankySpawnInterval = 4f; // Spawn tanky bricks every X seconds
+    //keep track of max tanky bricks
+    private int maxTankyBricks = 0;
 
-    // Tanky brick tracking
-    private float superTankySpawnTimer = 0f;
-    private float superTankySpawnInterval = 2f; // Spawn super tanky bricks every X seconds
-    private int maxSuperTankyBricks = 3;
+    //plus one to max tanky bricks
+    public int AddToTankyBricks()
+    {
+        return maxTankyBricks++;
+    }
+
+
+    // Super Tanky brick tracking
+    private float superTankySpawnTimer = 4f;
+    private float superTankySpawnInterval = 4f; // Spawn super tanky bricks every X seconds
+    private int maxSuperTankyBricks = 0;
+
+    //plus one to max super tanky bricks
+    public int AddToSuperTankyBricks()
+    {
+        return maxSuperTankyBricks++;
+    }
 
     // Speed brick tracking
-    private float speedSpawnTimer = 0f;
-    private float speedSpawnInterval = 1f; // Spawn speed bricks every 2 seconds after a tanky brick
-    private bool shouldSpawnSpeedBrick = false;
+    private float speedSpawnTimer = 4f;
+    private float speedSpawnInterval = 4f; // Spawn speed bricks every x seconds
+    private int maxSpeedBricks = 0;
+
+    //plus one to max speed bricks
+    public int AddToSpeedBricks()
+    {
+        return maxSpeedBricks++;
+    }
+
+    //Get max speed bricks
+    public int GetMaxSpeedBricks()
+    {
+        return maxSpeedBricks;
+    }
+
 
     private void Start()
     {
@@ -44,103 +87,66 @@ public class SpawnManager : MonoBehaviour
     {
         // Check if we have any spawners
         if (brickSpawners == null || brickSpawners.Length == 0)
+        {
             return;
+        }
 
         // === Regular Brick Spawning ===
         spawnTimer += Time.deltaTime;
+        tankySpawnTimer += Time.deltaTime;
+        superTankySpawnTimer += Time.deltaTime;
+        speedSpawnTimer += Time.deltaTime;
 
-        if (spawnTimer >= spawnInterval)
+        //if total bricks alive is less than 48, spawn more bricks
+        if (totalBricksAlive < 48 && spawnTimer >= spawnInterval)
         {
+            
             spawnTimer = 0f;
-
-            // Pick a random spawner
+        
+            //spawn a regular brick at a random spawner
             int randomIndex = Random.Range(0, brickSpawners.Length);
-            BrickSpawner selectedSpawner = brickSpawners[randomIndex];
+            brickSpawners[randomIndex].SpawnBrickHere();
+            AddToTotal();
+            AddToRegularBricks();
+            Debug.Log("Total bricks alive: " + totalBricksAlive);
+            Debug.Log("Max regular bricks: " + maxRegularBricks);
 
-            // Spawn brick from the selected spawner
-            if (selectedSpawner != null)
-            {
-                selectedSpawner.SpawnBrickHere();
-            }
         }
 
-        // === Tanky Brick Spawning ===
-        tankySpawnTimer += Time.deltaTime;
-
-        if (tankySpawnTimer >= tankySpawnInterval)
+        //spawn a tanky brick if under the limit
+        if (totalBricksAlive < 48 && maxTankyBricks < 8 && tankySpawnTimer >= tankySpawnInterval)
         {
             tankySpawnTimer = 0f;
-
-            // Count how many tanky bricks currently exist
-            int tankyBrickCount = GameObject.FindGameObjectsWithTag("TankyBrick").Length;
-
-            // Only spawn if we have less than the max
-            if (tankyBrickCount < maxTankyBricks)
-            {
-                // Pick a random spawner
-                int randomIndex = Random.Range(0, brickSpawners.Length);
-                BrickSpawner selectedSpawner = brickSpawners[randomIndex];
-
-                // Spawn tanky brick from the selected spawner
-                if (selectedSpawner != null)
-                {
-                    selectedSpawner.SpawnTankyBrickHere();
-                    Debug.Log($"Spawned tanky brick. Total: {tankyBrickCount + 1}");
-
-                    // Trigger speed brick spawning
-                    shouldSpawnSpeedBrick = true;
-                    speedSpawnTimer = 0f; // Reset the timer
-                }
-            }
+            int randomTankyIndex = Random.Range(0, brickSpawners.Length);
+            brickSpawners[randomTankyIndex].SpawnTankyBrickHere();
+            AddToTotal();
+            AddToTankyBricks();
+            Debug.Log("Total bricks alive: " + totalBricksAlive);
+            Debug.Log("Max tanky bricks: " + maxTankyBricks);
         }
 
-        // === Super Tanky Brick Spawning ===
-        tankySpawnTimer += Time.deltaTime;
-
-        if (tankySpawnTimer >= tankySpawnInterval)
+        //spawn a super tanky brick if under the limit
+        if (totalBricksAlive < 48 && maxSuperTankyBricks < 4 && superTankySpawnTimer >= superTankySpawnInterval)
         {
-            tankySpawnTimer = 0f;
-
-            // Count how many tanky bricks currently exist
-            int superTankyBrickCount = GameObject.FindGameObjectsWithTag("SuperTankyBrick").Length;
-
-            // Only spawn if we have less than the max
-            if (superTankyBrickCount < maxSuperTankyBricks)
-            {
-                // Pick a random spawner
-                int randomIndex = Random.Range(0, brickSpawners.Length);
-                BrickSpawner selectedSpawner = brickSpawners[randomIndex];
-
-                // Spawn tanky brick from the selected spawner
-                if (selectedSpawner != null)
-                {
-                    selectedSpawner.SpawnSuperTankyBrickHere();
-                    Debug.Log($"Spawned super tanky brick. Total: {superTankyBrickCount + 1}");
-                }
-            }
+            superTankySpawnTimer = 0f;
+            int randomSuperTankyIndex = Random.Range(0, brickSpawners.Length);
+            brickSpawners[randomSuperTankyIndex].SpawnSuperTankyBrickHere();
+            AddToTotal();
+            AddToSuperTankyBricks();
+            Debug.Log("Total bricks alive: " + totalBricksAlive);
+            Debug.Log("Max super tanky bricks: " + maxSuperTankyBricks);
         }
 
-        // === Speed Brick Spawning ===
-        if (shouldSpawnSpeedBrick)
+        //spawn a speed brick if under the limit
+        if (totalBricksAlive < 48 && maxSpeedBricks < 12 && speedSpawnTimer >= speedSpawnInterval)
         {
-            speedSpawnTimer += Time.deltaTime;
-
-            if (speedSpawnTimer >= speedSpawnInterval)
-            {
-                speedSpawnTimer = 0f;
-                shouldSpawnSpeedBrick = false; // Only spawn once per tanky brick
-
-                // Pick a random spawner
-                int randomIndex = Random.Range(0, brickSpawners.Length);
-                BrickSpawner selectedSpawner = brickSpawners[randomIndex];
-
-                // Spawn speed brick from the selected spawner
-                if (selectedSpawner != null)
-                {
-                    selectedSpawner.SpawnSpeedBrickHere();
-                    Debug.Log("Spawned speed brick after tanky brick");
-                }
-            }
+            speedSpawnTimer = 0f;
+            int randomSpeedIndex = Random.Range(0, brickSpawners.Length);
+            brickSpawners[randomSpeedIndex].SpawnSpeedBrickHere();
+            AddToTotal();
+            AddToSpeedBricks();
+            Debug.Log("Total bricks alive: " + totalBricksAlive);
+            Debug.Log("Max speed bricks: " + maxSpeedBricks);
         }
     }
 }
