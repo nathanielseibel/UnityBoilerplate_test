@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 7418333659790492832}
   - component: {fileID: 7418333659790492835}
   - component: {fileID: 7418333659790492863}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base Raft
-  m_TagString: Raft
+  m_TagString: Brick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,5 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ba182f42496b74f868b1b7dfaeca36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
-  score: 50
+  moveDistance: 1
+  moveInterval: 1.5
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 192
