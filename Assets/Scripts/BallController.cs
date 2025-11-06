@@ -30,7 +30,7 @@ public class BallController : MonoBehaviour
         // Make sure ball doesn't move until launched
         rb.isKinematic = true;
 
-
+        
     }
 
     // Launch the ball
@@ -97,7 +97,6 @@ public class BallController : MonoBehaviour
             Debug.Log("Ball hit, speed up duration reset");
         }
 
-        
 
     }
     private IEnumerator ResetBallSpeed()

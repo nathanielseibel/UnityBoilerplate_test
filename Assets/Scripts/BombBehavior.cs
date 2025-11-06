@@ -2,75 +2,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class BombBehavior : MonoBehaviour
 {
-    public int health = 1;
-    public int damage = 2;
-    [SerializeField] private float initialSpeed = 300f;
-    Rigidbody rb;
-    [SerializeField] private float ballSpeed = 35f;
+    // Speed at which the bomb falls
+    public float fallSpeed = 5f;
+    public float bounceForce = 300f; // Adjust how high bomb bounces
 
+    //Base Prefab reference
+    [SerializeField] private GameObject basePrefab;
 
+    private bool hasHitPaddle = false;
+    private Collider bombCollider;
 
-    [SerializeField] private BaseManager Manager;
-
-    void Start()
+    private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.AddForce(new Vector3(0, initialSpeed, 0));
+        bombCollider = GetComponent<Collider>();
 
-    }
-    void OnCollisionEnter(Collision collision)
-    {
-
-        //ignore collision with bricks
-        if (collision.gameObject.tag == "Brick")
+        //The bomb flys upward when instantiated
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
-            return;
+            Vector3 launchDirection = (Vector3.up).normalized;
+            rb.AddForce(launchDirection * 15f, ForceMode.Impulse);
         }
 
-
-
-
-        if (collision.gameObject.tag == "Base")
+        //Set this bomb to ignore collisions with Brick, SpeedBrick, TankyBrick, SuperTankyBrick
+        Collider[] allColliders = FindObjectsOfType<Collider>();
+        foreach (Collider col in allColliders)
         {
-            health--;
-
-            if (health <= 0)
-            { 
-                Destroy(gameObject);
+            if (col.CompareTag("Brick") || col.CompareTag("SpeedBrick") || col.CompareTag("TankyBrick") || col.CompareTag("SuperTankyBrick"))
+            {
+                Physics.IgnoreCollision(bombCollider, col);
             }
         }
 
-        //if collides with wall, bounce off
-        if (collision.gameObject.tag == "Wall")
+        //Code to ignore collisions with all balls in the scene
+        GameObject[] balls = GameObject.FindGameObjectsWithTag("Ball");
+        foreach (GameObject ball in balls)
         {
-            Vector3 normal = collision.contacts[0].normal;
-            rb.velocity = Vector3.Reflect(rb.velocity, normal);
+            Collider ballCollider = ball.GetComponent<Collider>();
+            if (ballCollider != null)
+            {
+                Physics.IgnoreCollision(bombCollider, ballCollider, true);
+            }
         }
-
-
-        // Add a small random vector to the ball's velocity to prevent straight lines
-        Vector2 random2D = UnityEngine.Random.insideUnitCircle.normalized;
-        rb.velocity += new Vector3(random2D.x, random2D.y, 0);
-
     }
 
     private void Update()
     {
         
-
-        //apply a downward force to the ball constantly
-        rb.AddForce(new Vector3(0, -5f, 0));
-
-        //overtime decrease the ball speed to a minimum of 0
-        if (ballSpeed > 0f)
-        {
-            ballSpeed -= Time.deltaTime * 10f;
-        }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
 
+        // Check if bomb hit the paddle
+        if (!hasHitPaddle && collision.gameObject.CompareTag("Player"))
+        {
+            hasHitPaddle = true;
+
+            // Shoot bomb back into the air
+            if (rb != null)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, bounceForce *2f, rb.velocity.z);
+            }
+
+            // Re-enable collisions with bricks
+            EnableBrickCollisions();
+        }
+
+        //if it hits the "Wall" bounce the ball into the air
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            if (rb != null)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, bounceForce, rb.velocity.z);
+            }
+        }
+
+        // Add a small random vector to the bomb's velocity to prevent straight lines
+        Vector2 random2D = UnityEngine.Random.insideUnitCircle.normalized;
+        rb.velocity += new Vector3(random2D.x, random2D.y, 0);
+    }
+
+    void EnableBrickCollisions()
+    {
+        Collider[] allColliders = FindObjectsOfType<Collider>();
+        foreach (Collider col in allColliders)
+        {
+            if (col.CompareTag("Brick") || col.CompareTag("SpeedBrick") || col.CompareTag("TankyBrick") || col.CompareTag("SuperTankyBrick"))
+            {
+                Physics.IgnoreCollision(bombCollider, col, false);
+            }
+        }
+    }
 }

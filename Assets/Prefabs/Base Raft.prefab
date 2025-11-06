@@ -110,6 +110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ba182f42496b74f868b1b7dfaeca36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bombPrefab: {fileID: 8397864171743492360, guid: 881bf985eee9c714091b6fd666282d3d, type: 3}
+  throwForce: 10
+  throwHeight: 6
   moveDistance: 1
   moveInterval: 1.5
   collisionMask:

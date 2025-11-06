@@ -5,8 +5,14 @@ using UnityEngine;
 
 public class RaftScript : MonoBehaviour
 {
+    //For bomb
+    public GameObject bombPrefab;
+    public float throwForce = 10f;
+    public float throwHeight = 8f;
+    private bool hasThrownBomb = false;
     
-    
+
+    //initialize health of brick
     private int health = 1;
 
     //if brick is tag "brick", it has 1 health
@@ -52,7 +58,20 @@ public class RaftScript : MonoBehaviour
     void Start()
     {
         //get box collider
+        //This line retrieves the BoxCollider component attached to the same GameObject as this script and assigns it to the boxCol variable.
+        // The BoxCollider is used for collision detection when the brick attempts to move down.
+        // By accessing the BoxCollider, the script can determine the size and shape of the brick for accurate collision checks.
+        // This is essential for ensuring that the brick only moves down when there is enough space and does not overlap with other objects.
+        // It allows the MoveBrickDown() method to use the collider's dimensions to perform overlap checks against the collision mask.
+        // In summary, this line is crucial for enabling proper collision detection and movement behavior for the brick in the game.
+        // Without it, the brick would not be able to check for collisions when moving down.
         boxCol = GetComponent<BoxCollider>();
+
+
+        //initialize collision mask
+        //The mask is used to filter which layers the brick will check for collisions with when moving down.
+        // By setting the mask to only include the "Brick" and "Ground" layers, the brick will only consider collisions with objects on these layers.
+        // This is important for ensuring that the brick only stops moving when it encounters other bricks or the ground, and ignores other objects in the scene that are not relevant to its movement.
 
         // Set the mask to only detect "Brick" and "Ground" layers
         collisionMask = LayerMask.GetMask("Brick", "Ground");
@@ -61,18 +80,47 @@ public class RaftScript : MonoBehaviour
         if (spawnManager == null)
         {
             spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        } else
+        {
+            Debug.Log("Spawn Manager found at start");
+        }
+
+        if (scoreManager == null)
+        {
+            scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+
+        }
+        else
+        {
+            Debug.Log("Score Manager found at start");
         }
 
     }
     void OnCollisionEnter(Collision collision)
     {
+        // Check if the collision is with a ball
+        // Reduce health and check for destruction
+        // Debug log for collision
         if (collision.gameObject.tag == "Ball")
         {
             health--;
             if (health <= 0)
             {
                 Destroy(gameObject);
+                Debug.Log("Brick destroyed on collision with ball.");
             }
+        }
+
+        // Check if the collision is with a bomb
+        // Destroy the brick immediately
+        // Debug log for collision
+        if (collision.gameObject.tag == "Bomb")
+        {
+             Destroy(gameObject);
+             Debug.Log("Brick destroyed on collision with bomb.");
+
+            // Destroy the bomb as well
+            Destroy(collision.gameObject);
         }
     }
 
@@ -115,30 +163,11 @@ public class RaftScript : MonoBehaviour
             spawnManager.SubtractFromSpeedBricks();
             Debug.Log("Speed Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
         }
-        else if (gameObject.CompareTag("PowerUp"))
-        {
-            scoreValue = 200; // Power ups
-        }
-        else if (gameObject.CompareTag("Bomb"))
-        {
-            scoreValue = 100; // Bomb
-        }
         else
         {
-            scoreValue = 10; // Default value
+                       scoreValue = 0; // Unknown brick type
         }
 
-        if (scoreManager == null)
-        {
-            scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
-            //Debug.Log("Score Manager found");
-            //throw new error if score manager not found
-            if (scoreManager == null)
-            {
-                Debug.LogError("Score Manager not found!");
-            }
-
-        }
         scoreManager.AddScore(scoreValue);
         
     }
@@ -161,11 +190,11 @@ public class RaftScript : MonoBehaviour
         }
 
         //if the brick reaches 2 on the y axis, prevent it from going further down
-        if (transform.position.y <= 2f)
+        if (transform.position.y <= 4f)
         {
             canMove = false;
             Vector3 pos = transform.position;
-            pos.y = 2f;
+            pos.y = 4f;
             transform.position = pos;
         }
 
@@ -180,9 +209,58 @@ public class RaftScript : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+        //For bomb throwing
+        // Check if this brick has reached the throw height and hasn't thrown a bomb yet
+        if (!hasThrownBomb && transform.position.y <= throwHeight)
+        {
+            // Check if this object has the correct tag
+            if (gameObject.CompareTag("Brick") || gameObject.CompareTag("SpeedBrick"))
+            {
+                ThrowBomb();
+                ResetThrow();
+            }
+        }
     }
 
-    
+    void ThrowBomb()
+    {
+        // Instantiate the bomb at the brick's position
+        GameObject bomb = Instantiate(bombPrefab, transform.position, Quaternion.identity);
+
+        // Get the Rigidbody component and apply downward force
+        Rigidbody rb = bomb.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(Vector3.down * throwForce, ForceMode.Impulse);
+        }
+
+        // Mark that we've thrown the bomb so we don't throw multiple
+        hasThrownBomb = true;
+
+        Debug.Log(gameObject.name + " threw a bomb!");
+    }
+
+    // Optional: Reset if you want the brick to throw again
+    public void ResetThrow()
+    {
+        //wait 3 seconds before resetting
+        if (hasThrownBomb) {
+            StartCoroutine(ResetThrowCoroutine());
+        }
+    }
+
+    // Coroutine to reset bomb throw after a delay
+    private IEnumerator ResetThrowCoroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        hasThrownBomb = false;
+    }
+
+
+    // Movement and Collision Detection
     [SerializeField] private LayerMask collisionMask;
     private BoxCollider boxCol;
 
@@ -223,3 +301,6 @@ public class RaftScript : MonoBehaviour
 
 
 }
+
+
+
