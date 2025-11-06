@@ -9,4 +9,9 @@ public class GameOverScreen : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
     }
+    public void QuitGame()
+    {
+        SceneManager.LoadScene("Scenes/Main Menu");
+        
+    }
 }
