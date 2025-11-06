@@ -6,15 +6,45 @@ public class BaseManager : MonoBehaviour
 {
     public int health = 10;
     public int maxHealth = 20;
+
+    //get current health
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+    }
+
     void Start()
     {
-        //add base to game manager
+        // Update health UI at start
+        ScoreManager.Instance.UpdateDamHealth(health);
     }
-    void OnCollisionEnter(Collision collision)
+
+
+    //  Handle collisions with bombs
+    //  I gave the base a rigidbody and a collider set to isTrigger to detect bomb hits
+    //  The base is set to kinematic so it doesn't move and the ball will pass through it
+    //  When a bomb collides with the base, OnTriggerEnter is called
+    //  The base's health is reduced and the bomb is destroyed
+    //  If health reaches zero, the base is destroyed
+    void OnTriggerEnter(Collider other)
     {
-       
-        
-            
+        // Check if the object that hit the base is a bomb
+        if (other.CompareTag("Bomb"))
+        {
+            // Reduce health
+            health--;
+            //upsdate health UI
+            ScoreManager.Instance.UpdateDamHealth(health);
+
+            // Destroy the bomb
+            Destroy(other.gameObject);
+
+            // Check if base should be destroyed
             if (health <= 0)
             {
                 //create destruction effect
@@ -22,7 +52,6 @@ public class BaseManager : MonoBehaviour
                 //destroy raft LAST
                 Destroy(gameObject);
             }
-        
-
+        }
     }
 }

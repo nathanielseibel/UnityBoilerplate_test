@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6281206912210623638}
   - component: {fileID: 6281206912210623639}
   - component: {fileID: 6281206912210623635}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Strong Raft
-  m_TagString: Raft
+  m_TagString: SpeedBrick
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,5 +110,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ba182f42496b74f868b1b7dfaeca36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2
-  score: 100
+  bombPrefab: {fileID: 8397864171743492360, guid: 881bf985eee9c714091b6fd666282d3d, type: 3}
+  throwForce: 10
+  throwHeight: 10
+  moveDistance: 1
+  moveInterval: 1.5
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 192
