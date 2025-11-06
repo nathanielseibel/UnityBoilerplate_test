@@ -7,9 +7,21 @@ public class BaseManager : MonoBehaviour
     public int health = 10;
     public int maxHealth = 20;
 
+    //get current health
+    public int GetHealth()
+    {
+        return health;
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+    }
+
     void Start()
     {
-        
+        // Update health UI at start
+        ScoreManager.Instance.UpdateDamHealth(health);
     }
 
 
@@ -26,6 +38,8 @@ public class BaseManager : MonoBehaviour
         {
             // Reduce health
             health--;
+            //upsdate health UI
+            ScoreManager.Instance.UpdateDamHealth(health);
 
             // Destroy the bomb
             Destroy(other.gameObject);

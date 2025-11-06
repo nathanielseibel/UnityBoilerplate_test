@@ -8,12 +8,23 @@ public class RaftScript : MonoBehaviour
     //For bomb
     public GameObject bombPrefab;
     public float throwForce = 10f;
-    public float throwHeight = 8f;
+    public float throwHeight = 10f;
     private bool hasThrownBomb = false;
     
 
     //initialize health of brick
     private int health = 1;
+    //public getter for health
+    public int GetHealth()
+    {
+        return health;
+    }
+    //Take away health
+    public void TakeDamage()
+    {
+        health--;
+        
+    }
 
     //if brick is tag "brick", it has 1 health
     private void Awake()

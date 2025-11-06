@@ -6,10 +6,10 @@ public class BombBehavior : MonoBehaviour
 {
     // Speed at which the bomb falls
     public float fallSpeed = 5f;
-    public float bounceForce = 300f; // Adjust how high bomb bounces
+    public float bounceForce = 30f; // Adjust how high bomb bounces
 
-    //Base Prefab reference
-    [SerializeField] private GameObject basePrefab;
+    //Explosion Prefab reference
+    [SerializeField] private GameObject explosion;
 
     private bool hasHitPaddle = false;
     private Collider bombCollider;
@@ -62,11 +62,21 @@ public class BombBehavior : MonoBehaviour
         {
             hasHitPaddle = true;
 
-            // Shoot bomb back into the air
+            // Shoot bomb back into the air everytime it hits the paddle
             if (rb != null)
             {
-                rb.velocity = new Vector3(rb.velocity.x, bounceForce *2f, rb.velocity.z);
+                rb.velocity = new Vector3(rb.velocity.x, bounceForce, rb.velocity.z);
             }
+
+
+
+            //if player is moving, add some of that velocity to the bomb
+            Rigidbody paddleRb = collision.gameObject.GetComponent<Rigidbody>();
+            if (paddleRb != null)
+            {
+                rb.velocity += new Vector3(paddleRb.velocity.x * 0.5f, 0, 0);
+            }
+
 
             // Re-enable collisions with bricks
             EnableBrickCollisions();
@@ -81,10 +91,18 @@ public class BombBehavior : MonoBehaviour
             }
         }
 
-        // Add a small random vector to the bomb's velocity to prevent straight lines
-        Vector2 random2D = UnityEngine.Random.insideUnitCircle.normalized;
-        rb.velocity += new Vector3(random2D.x, random2D.y, 0);
+        
     }
+
+    private void OnDestroy()
+    {
+        // Instantiate explosion effect at bomb's position
+        if (explosion != null)
+        {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+        }
+    }
+
 
     void EnableBrickCollisions()
     {
@@ -97,4 +115,6 @@ public class BombBehavior : MonoBehaviour
             }
         }
     }
+
+   
 }
