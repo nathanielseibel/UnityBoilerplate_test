@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BaseManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class BaseManager : MonoBehaviour
                 //report to GM
                 //destroy raft LAST
                 Destroy(gameObject);
+                SceneManager.LoadScene("GameOver");
             }
         }
     }
