@@ -1796,9 +1796,45 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3302258009075227086, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302258009075227086, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.84785116
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302258009075227086, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.40566027
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302258009075227086, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294957159
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112150707562841368, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112150707562841368, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112150707562841368, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112150707562841368, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5112150707562841368, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -173
+      value: 112
+      objectReference: {fileID: 0}
+    - target: {fileID: 5112150707562841368, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -84
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba8b4229a0d63524aa3ed48a87ddf40e, type: 3}
