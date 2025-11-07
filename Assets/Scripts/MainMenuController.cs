@@ -13,6 +13,11 @@ public class MainMenuController : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+        
+    }
     //SceneManager is an API from Unity that allows us to manage scenes
     //loadScene is a function that loads a scene by its name or index
     //"Game" is the name of the scene we want to load

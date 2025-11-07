@@ -8,6 +8,7 @@ public class ScoreManager : MonoBehaviour
     [Header("UI References")]
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI hiScoreText;
+    public TextMeshProUGUI damHealth;
 
     private int currentScore = 0;
     private int hiScore = 0;
@@ -85,6 +86,14 @@ public class ScoreManager : MonoBehaviour
         if (hiScoreText != null)
         {
             hiScoreText.text = "Hi Score: " + hiScore;
+        }
+    }
+
+    public void UpdateDamHealth(int health)
+    {
+        if (damHealth != null)
+        {
+            damHealth.text = "Dam Health: " + health;
         }
     }
 }

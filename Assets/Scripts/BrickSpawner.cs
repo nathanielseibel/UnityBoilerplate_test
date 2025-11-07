@@ -23,7 +23,7 @@ public class BrickSpawner : MonoBehaviour
         // If we find any colliders with brick tags, position is not clear
         foreach (Collider col in colliders)
         {
-            if (col.CompareTag("Brick") || col.CompareTag("TankyBrick") || col.CompareTag("SpeedBrick"))
+            if (col.CompareTag("Brick") || col.CompareTag("TankyBrick") || col.CompareTag("SuperTankyBrick") || col.CompareTag("SpeedBrick"))
             {
                 return false; // Position occupied
             }
