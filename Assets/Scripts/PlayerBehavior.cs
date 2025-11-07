@@ -7,7 +7,7 @@ public class PlayerBehavior : MonoBehaviour
     public static PlayerBehavior Instance;
     Rigidbody rb;
     BoxCollider col;
-    float speed = 20f;
+    float speed = 30f;
     public float rightScreenEdge;
     public float leftScreenEdge;
 

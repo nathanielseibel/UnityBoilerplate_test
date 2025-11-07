@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class BaseManager : MonoBehaviour
 {
     public int health = 10;
     public int maxHealth = 20;
+    public GameOverManager gameOverManager;
 
     //get current health
     public int GetHealth()
@@ -39,7 +39,7 @@ public class BaseManager : MonoBehaviour
         {
             // Reduce health
             health--;
-            //upsdate health UI
+            //update health UI
             ScoreManager.Instance.UpdateDamHealth(health);
 
             // Destroy the bomb
@@ -52,7 +52,8 @@ public class BaseManager : MonoBehaviour
                 //report to GM
                 //destroy raft LAST
                 Destroy(gameObject);
-                SceneManager.LoadScene("GameOver");
+                Time.timeScale = 0;
+                gameOverManager.ShowGameOverUI();
             }
         }
     }
