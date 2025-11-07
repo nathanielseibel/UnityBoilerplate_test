@@ -52,7 +52,7 @@ public class BaseManager : MonoBehaviour
                 //report to GM
                 //destroy raft LAST
                 Destroy(gameObject);
-                Time.timeScale = 0;
+                Time.timeScale = 0f;
                 gameOverManager.ShowGameOverUI();
             }
         }
