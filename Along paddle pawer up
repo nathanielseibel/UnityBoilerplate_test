@@ -1,0 +1,96 @@
+power ups script
+using System.Collections;
+using UnityEngine;
+
+public class PowerUp_PaddleSize3D : MonoBehaviour
+{
+    [Header("Fall Settings")]
+    [SerializeField] private float fallSpeed = 5f;
+
+    [Header("Effect Settings")]
+    [SerializeField] private float sizeMultiplier = 1.5f;
+    [SerializeField] private float effectDuration = 8f;
+
+    private Rigidbody rb;
+    private bool collected = false;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector3(0f, -fallSpeed, 0f);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (collected) return;
+
+        if (other.CompareTag("Paddle"))
+        {
+            collected = true;
+            ApplyEffect(other.gameObject);
+            Destroy(gameObject); // remove the pickup
+        }
+    }
+
+    private void ApplyEffect(GameObject paddle)
+    {
+        PaddleSizeBuff receiver = paddle.GetComponent<PaddleSizeBuff>();
+        if (receiver != null)
+        {
+            receiver.ApplyTempSizeBoost(sizeMultiplier, effectDuration);
+        }
+        else
+        {
+            Debug.LogWarning("No PaddleSizeBuff found on paddle!");
+        }
+    }
+}
+
+
+padels behavyour 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PaddleSizeBuff : MonoBehaviour
+{
+    private Coroutine activeRoutine;
+    private Vector3 baseScale;
+
+    private void Awake()
+    {
+        baseScale = transform.localScale;
+    }
+
+    public void ApplyTempSizeBoost(float multiplier, float duration)
+    {
+        if (activeRoutine != null)
+        {
+            StopCoroutine(activeRoutine);
+            transform.localScale = baseScale;
+        }
+
+        activeRoutine = StartCoroutine(SizeBoostRoutine(multiplier, duration));
+    }
+
+    private IEnumerator SizeBoostRoutine(float multiplier, float duration)
+    {
+        Vector3 boostedScale = new Vector3(
+            baseScale.x * multiplier,
+            baseScale.y,
+            baseScale.z
+        );
+
+        transform.localScale = boostedScale;
+
+        yield return new WaitForSeconds(duration);
+
+        transform.localScale = baseScale;
+        activeRoutine = null;
+    }
+
+}
