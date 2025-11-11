@@ -56,14 +56,16 @@ public class BombBehavior : MonoBehaviour
 
     public void TakeDamage()
     {
+        Debug.Log("TakeDamage() was called!"); // ADD THIS
+        Debug.Log("Current bombHP: " + bombHP); // AND THIS
+
         bombHP--;
+        Debug.Log("HP after decrement: " + bombHP); // AND THIS
 
         if (bombHP <= 0)
         {
-            // 1. Instantiate the explosion FIRST.
+            Debug.Log("Trying to explode!"); // AND THIS
             Instantiate(explosion, transform.position, Quaternion.identity);
-
-            // 2. Then destroy the current object.
             Destroy(this.gameObject);
         }
     }

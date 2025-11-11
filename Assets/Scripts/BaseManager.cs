@@ -43,8 +43,12 @@ public class BaseManager : MonoBehaviour
             ScoreManager.Instance.UpdateDamHealth(health);
 
             // Destroy the bomb as well
-            BombBehavior bombScript = gameObject.GetComponent<BombBehavior>();
-            bombScript.TakeDamage();
+            BombBehavior bombScript = other.gameObject.GetComponent<BombBehavior>();
+
+            if (bombScript != null)
+            {
+                bombScript.TakeDamage();
+            }
 
 
             // Check if base should be destroyed
