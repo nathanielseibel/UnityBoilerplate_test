@@ -128,7 +128,8 @@ public class RaftScript : MonoBehaviour
         // Debug log for collision
         if (collision.gameObject.tag == "Bomb")
         {
-
+            //Destroy the brick
+            Destroy(gameObject);
             // Destroy the bomb as well
             BombBehavior bombScript = collision.gameObject.GetComponent<BombBehavior>();
 
@@ -136,8 +137,8 @@ public class RaftScript : MonoBehaviour
             {
                 bombScript.TakeDamage();
             }
-
-
+            scoreValue = 100;
+            scoreManager.AddScore(scoreValue);
         }
     }
 

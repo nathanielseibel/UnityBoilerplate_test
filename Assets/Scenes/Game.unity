@@ -3320,6 +3320,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Base Raft
       objectReference: {fileID: 0}
+    - target: {fileID: 7418333659790492834, guid: 14b606b858770a84f83dad70f2d6778a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7418333659790492862, guid: 14b606b858770a84f83dad70f2d6778a, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -3330,7 +3334,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7418333659790492862, guid: 14b606b858770a84f83dad70f2d6778a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.99
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7418333659790492862, guid: 14b606b858770a84f83dad70f2d6778a, type: 3}
       propertyPath: m_LocalPosition.z

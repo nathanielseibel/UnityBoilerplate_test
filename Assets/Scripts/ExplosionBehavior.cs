@@ -16,6 +16,10 @@ public class ExplosionBehavior : MonoBehaviour
 
     [SerializeField] private float maxExplosionSize = 60.0f;
 
+    private int scoreValue;
+    //get score manager
+    private ScoreManager scoreManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,16 @@ public class ExplosionBehavior : MonoBehaviour
     {
         //expand the explosion over time and then destroy it
         StartCoroutine(ExpandAndDestroy());
+
+        if (scoreManager == null)
+        {
+            scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+
+        }
+        else
+        {
+            Debug.Log("Score Manager found at start");
+        }
 
 
     }
@@ -73,6 +87,8 @@ public class ExplosionBehavior : MonoBehaviour
                 if (brickScript.GetHealth() <= 0)
                 {
                     Destroy(other.gameObject);
+                    scoreValue = 100;
+                    scoreManager.AddScore(scoreValue);
                 }
             }
 

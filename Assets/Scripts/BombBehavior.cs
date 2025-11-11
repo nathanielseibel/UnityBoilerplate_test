@@ -17,6 +17,7 @@ public class BombBehavior : MonoBehaviour
 
     private void Awake()
     {
+
         bombCollider = GetComponent<Collider>();
 
         //The bomb flys upward when instantiated
@@ -110,8 +111,6 @@ public class BombBehavior : MonoBehaviour
 
         
     }
-
-    
 
 
     void EnableBrickCollisions()
