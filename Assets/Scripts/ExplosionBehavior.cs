@@ -19,7 +19,7 @@ public class ExplosionBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Destroy(this.gameObject, explosionDuration);
     }
 
     // Awake is called when the script instance is being loaded

@@ -38,12 +38,14 @@ public class BaseManager : MonoBehaviour
         if (other.CompareTag("Bomb"))
         {
             // Reduce health
-            health--;
+            TakeDamage();
             //update health UI
             ScoreManager.Instance.UpdateDamHealth(health);
 
-            // Destroy the bomb
-            Destroy(other.gameObject);
+            // Destroy the bomb as well
+            BombBehavior bombScript = gameObject.GetComponent<BombBehavior>();
+            bombScript.TakeDamage();
+
 
             // Check if base should be destroyed
             if (health <= 0)

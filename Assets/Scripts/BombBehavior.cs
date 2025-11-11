@@ -7,6 +7,7 @@ public class BombBehavior : MonoBehaviour
     // Speed at which the bomb falls
     public float fallSpeed = 5f;
     public float bounceForce = 30f; // Adjust how high bomb bounces
+    private float bombHP = 1f;
 
     //Explosion Prefab reference
     [SerializeField] private GameObject explosion;
@@ -53,6 +54,20 @@ public class BombBehavior : MonoBehaviour
         
     }
 
+    public void TakeDamage()
+    {
+        bombHP--;
+
+        if (bombHP <= 0)
+        {
+            // 1. Instantiate the explosion FIRST.
+            Instantiate(explosion, transform.position, Quaternion.identity);
+
+            // 2. Then destroy the current object.
+            Destroy(this.gameObject);
+        }
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -94,14 +109,7 @@ public class BombBehavior : MonoBehaviour
         
     }
 
-    private void OnDestroy()
-    {
-        // Instantiate explosion effect at bomb's position
-        if (explosion != null)
-        {
-            Instantiate(explosion, transform.position, Quaternion.identity);
-        }
-    }
+    
 
 
     void EnableBrickCollisions()
