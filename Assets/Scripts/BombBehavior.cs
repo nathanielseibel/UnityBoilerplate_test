@@ -7,6 +7,7 @@ public class BombBehavior : MonoBehaviour
     // Speed at which the bomb falls
     public float fallSpeed = 5f;
     public float bounceForce = 30f; // Adjust how high bomb bounces
+    private float bombHP = 1f;
 
     //Explosion Prefab reference
     [SerializeField] private GameObject explosion;
@@ -16,6 +17,7 @@ public class BombBehavior : MonoBehaviour
 
     private void Awake()
     {
+
         bombCollider = GetComponent<Collider>();
 
         //The bomb flys upward when instantiated
@@ -51,6 +53,22 @@ public class BombBehavior : MonoBehaviour
     private void Update()
     {
         
+    }
+
+    public void TakeDamage()
+    {
+        Debug.Log("TakeDamage() was called!"); // ADD THIS
+        Debug.Log("Current bombHP: " + bombHP); // AND THIS
+
+        bombHP--;
+        Debug.Log("HP after decrement: " + bombHP); // AND THIS
+
+        if (bombHP <= 0)
+        {
+            Debug.Log("Trying to explode!"); // AND THIS
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -92,15 +110,6 @@ public class BombBehavior : MonoBehaviour
         }
 
         
-    }
-
-    private void OnDestroy()
-    {
-        // Instantiate explosion effect at bomb's position
-        if (explosion != null)
-        {
-            Instantiate(explosion, transform.position, Quaternion.identity);
-        }
     }
 
 

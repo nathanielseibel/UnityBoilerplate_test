@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BaseManager : MonoBehaviour
 {
-    public int health = 10;
-    public int maxHealth = 20;
+    [SerializeField] private int health = 10;
+    [SerializeField] private int maxHealth = 20;
     public GameOverManager gameOverManager;
 
     //get current health
@@ -38,23 +38,31 @@ public class BaseManager : MonoBehaviour
         if (other.CompareTag("Bomb"))
         {
             // Reduce health
-            health--;
+            TakeDamage();
             //update health UI
             ScoreManager.Instance.UpdateDamHealth(health);
 
-            // Destroy the bomb
-            Destroy(other.gameObject);
+            // Destroy the bomb as well
+            BombBehavior bombScript = other.gameObject.GetComponent<BombBehavior>();
+
+            if (bombScript != null)
+            {
+                bombScript.TakeDamage();
+            }
+
 
             // Check if base should be destroyed
             if (health <= 0)
             {
-                //create destruction effect
-                //report to GM
-                //destroy raft LAST
+                
+                //Destroy this dam
                 Destroy(gameObject);
-                Time.timeScale = 0f;
                 gameOverManager.ShowGameOverUI();
+                
             }
+
+            
+
         }
     }
 }
