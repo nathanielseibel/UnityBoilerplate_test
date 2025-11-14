@@ -7,7 +7,7 @@ public class MainMenuController : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("Scenes/Story and Tut");
+        SceneManager.LoadScene("Story and Tut");
         //Time starts
         Time.timeScale = 1.0f;
     }
