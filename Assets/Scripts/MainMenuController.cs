@@ -11,7 +11,7 @@ public class MainMenuController : MonoBehaviour
     //StartGame is function name () means the function doesn't take any parameters and {}is function body
     public void StartGame()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Story and Tut");
         //Time starts
         Time.timeScale = 1.0f;
     }

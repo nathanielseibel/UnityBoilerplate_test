@@ -13,6 +13,7 @@ public class StoryManager : MonoBehaviour
     [SerializeField] private GameObject storyImage2;
     [SerializeField] private GameObject storyImage3;
     [SerializeField] private GameObject storyImage4;
+    [SerializeField] private GameObject genreText;
 
     [SerializeField] private GameObject next;
     [SerializeField] private GameObject next2;
@@ -33,6 +34,7 @@ public class StoryManager : MonoBehaviour
         storyImage2.SetActive(false);
         storyImage3.SetActive(false);
         storyImage4.SetActive(false);
+        genreText.SetActive(true);
         next.SetActive(true);
         next2.SetActive(false);
         next3.SetActive(false);
@@ -46,6 +48,7 @@ public class StoryManager : MonoBehaviour
     {
         storyImage1.SetActive(false);
         storyImage2.SetActive(true);
+        genreText.SetActive(false);
         next.SetActive(false);
         next2.SetActive(true);
     }
