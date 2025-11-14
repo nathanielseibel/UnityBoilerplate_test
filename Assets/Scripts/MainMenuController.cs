@@ -5,13 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    // syntax of functions
-    //ReturnType FunctionName(ParameterType parameterName,...) {...function body...}
-    //void means the function doesn't return any value
-    //StartGame is function name () means the function doesn't take any parameters and {}is function body
     public void StartGame()
     {
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Scenes/Story and Tut");
         //Time starts
         Time.timeScale = 1.0f;
     }
