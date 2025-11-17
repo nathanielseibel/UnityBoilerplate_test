@@ -89,12 +89,12 @@ public class BallController : MonoBehaviour
         //If the ball hits the paddle, increase speed temporarily by double
         if (collision.gameObject.CompareTag("Player"))
         {
-            ballSpeed = 30f;
+            ResetBall();
+            /*ballSpeed = 30f;
             // after 2 seconds, reset speed back to normal
             StartCoroutine(ResetBallSpeed());
             //reset the duration each hit
-            speedUpDuration = 2f;
-            Debug.Log("Ball hit, speed up duration reset");
+            speedUpDuration = 2f;*/
         }
 
 

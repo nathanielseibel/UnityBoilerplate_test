@@ -17,6 +17,7 @@ TagManager:
   - SpeedBrick
   - SuperTankyBrick
   - ScoreManager
+  - Grabber
   layers:
   - Default
   - TransparentFX
