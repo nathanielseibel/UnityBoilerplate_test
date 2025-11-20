@@ -417,12 +417,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 268143322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f13044280c4e87488db474ca690244f, type: 3}
+  m_Script: {fileID: 11500000, guid: bc701a53c272e8e469165b22d462926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   launchSpeed: 10
-  launchDirection: {x: 0.5, y: 1}
-  paddle: {fileID: 0}
+  paddle: {fileID: 475697833}
   offsetFromPaddle: {x: 0, y: 0.8, z: 0}
   ballSpeed: 35
   speedUpDuration: 2
@@ -901,8 +900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightScreenEdge: 12.5
   leftScreenEdge: -12.5
+  mousePressPosition: {fileID: 0}
   maxForce: 10
-  lineRenderer: {fileID: 0}
 --- !u!1 &554026248
 GameObject:
   m_ObjectHideFlags: 0
