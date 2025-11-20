@@ -36,12 +36,12 @@ public class NewBallControl : MonoBehaviour
     private void LaunchBall()
     {
         Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = Camera.main.transform.position.z;
+        mousePosition.z = Mathf.Abs(Camera.main.transform.position.z);
         Vector3 mouseGamePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         
         rb.isKinematic = false;
-        
-        Vector3 launchDirection = (rb.position - mouseGamePosition).normalized;
+
+        Vector3 launchDirection = (mouseGamePosition - rb.position).normalized;
         // Launch the ball
         if (rb != null)
         {
@@ -85,6 +85,7 @@ public class NewBallControl : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        
         // Add a small random vector to the ball's velocity to prevent straight lines
         Vector2 random2D = UnityEngine.Random.insideUnitCircle.normalized;
         rb.velocity += new Vector3(random2D.x, random2D.y, 0);
