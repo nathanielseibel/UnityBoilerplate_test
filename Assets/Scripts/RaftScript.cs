@@ -10,10 +10,12 @@ public class RaftScript : MonoBehaviour
     public float throwForce = 10f;
     public float throwHeight = 10f;
     private bool hasThrownBomb = false;
-    
+
+    //boolean for if player destrroyed brick
+    private bool destroyedByPlayer = false;
 
     //initialize health of brick
-    private int health = 1;
+    [SerializeField] private int health;
     //public getter for health
     public int GetHealth()
     {
@@ -23,7 +25,16 @@ public class RaftScript : MonoBehaviour
     public void TakeDamage()
     {
         health--;
-        
+    }
+
+    public void TakePartialChargeDamage()
+    {
+        health -= 2;  
+    }
+
+    public void TakeFullChargeDamage()
+    {
+        health -= 3; 
     }
 
     //if brick is tag "brick", it has 1 health
@@ -107,87 +118,121 @@ public class RaftScript : MonoBehaviour
         }
 
     }
+
+    
     void OnCollisionEnter(Collision collision)
     {
-        // Check if the collision is with a ball
-        // Reduce health and check for destruction
-        // Debug log for collision
-        if (collision.gameObject.tag == "Ball")
-        {
-            TakeDamage();
-
-            if (health <= 0)
+            if (collision.gameObject.tag == "Ball")
             {
-                Destroy(gameObject);
-                Debug.Log("Brick destroyed on collision with ball.");
+                NewBallControl ballScript = collision.gameObject.GetComponent<NewBallControl>();
+
+                if (ballScript != null)
+                {
+                    float speed = ballScript.ballSpeed;
+
+                    if (speed < 30)
+                    {
+                        TakeDamage();
+                    }
+                    else if (speed >= 30 && speed < 40)
+                    {
+                        TakePartialChargeDamage();
+                    }
+                    else
+                    {
+                        TakeFullChargeDamage();
+                    }
+
+                    if (health <= 0)
+                    {
+                        destroyedByPlayer = true;  // Mark as player kill
+                        Destroy(gameObject);
+                    }
+                }
             }
-        }
+
 
         // Check if the collision is with a bomb
         // Destroy the brick immediately
         // Debug log for collision
         if (collision.gameObject.tag == "Bomb")
         {
-            //Destroy the brick
-            Destroy(gameObject);
-            // Destroy the bomb as well
             BombBehavior bombScript = collision.gameObject.GetComponent<BombBehavior>();
+            TakeDamage();
 
             if (bombScript != null)
             {
                 bombScript.TakeDamage();
             }
+
+            if (health <= 0)
+            {
+                destroyedByPlayer = true;  // Mark as player kill
+            }
+
             scoreValue = 100;
             scoreManager.AddScore(scoreValue);
         }
+
     }
 
     //Implement addscore() from score manager when brick is destroyed
     private void OnDestroy()
     {
-        // Set score value based on the brick's tag
+        // Only subtract from totals and add score if destroyed by player
+        if (!destroyedByPlayer)
+        {
+            // Just subtract from total, no score
+            if (gameObject.CompareTag("Brick"))
+            {
+                spawnManager.SubtractFromTotal();
+                spawnManager.SubtractFromRegularBricks();
+            }
+            else if (gameObject.CompareTag("TankyBrick"))
+            {
+                spawnManager.SubtractFromTotal();
+                spawnManager.SubtractFromTankyBricks();
+            }
+            else if (gameObject.CompareTag("SuperTankyBrick"))
+            {
+                spawnManager.SubtractFromTotal();
+                spawnManager.SubtractFromSuperTankyBricks();
+            }
+            else if (gameObject.CompareTag("SpeedBrick"))
+            {
+                spawnManager.SubtractFromTotal();
+                spawnManager.SubtractFromSpeedBricks();
+            }
+            return;  // Exit early, no score
+        }
+
+        // Original score logic for player kills
         if (gameObject.CompareTag("Brick"))
         {
-            scoreValue = 50; // Regular brick
+            scoreValue = 50;
             spawnManager.SubtractFromTotal();
-            //minus one from max regular bricks
             spawnManager.SubtractFromRegularBricks();
-            Debug.Log("Regular Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
         }
         else if (gameObject.CompareTag("TankyBrick"))
         {
-            scoreValue = 250; // Tanky brick
-            //tank brick destroyed
+            scoreValue = 250;
             spawnManager.SubtractFromTotal();
-            //minus one from max tanky bricks
             spawnManager.SubtractFromTankyBricks();
-            Debug.Log("Tanky Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
         }
         else if (gameObject.CompareTag("SuperTankyBrick"))
         {
-            scoreValue = 500; // Super Tanky brick
-            //super tank brick destroyed
+            scoreValue = 500;
             spawnManager.SubtractFromTotal();
-            //minus one from max super tanky bricks
             spawnManager.SubtractFromSuperTankyBricks();
-            Debug.Log("Super Tanky Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
         }
         else if (gameObject.CompareTag("SpeedBrick"))
         {
-            scoreValue = 100; // Speed brick
-            //speed brick destroyed
+            scoreValue = 100;
             spawnManager.SubtractFromTotal();
-            //minus one from max speed bricks
             spawnManager.SubtractFromSpeedBricks();
-            Debug.Log("Speed Brick Destroyed. Total Bricks Alive: " + spawnManager.GetTotalBricksAlive());
-        }
-        else
-        {
-                       scoreValue = 0; // Unknown brick type
         }
 
         scoreManager.AddScore(scoreValue);
-        
     }
 
 
@@ -234,7 +279,7 @@ public class RaftScript : MonoBehaviour
         if (!hasThrownBomb && transform.position.y <= throwHeight)
         {
             // Check if this object has the correct tag
-            if (gameObject.CompareTag("Brick") || gameObject.CompareTag("SpeedBrick"))
+            if (gameObject.CompareTag("SpeedBrick") || gameObject.CompareTag("SuperTankyBrick"))
             {
                 ThrowBomb();
                 ResetThrow();

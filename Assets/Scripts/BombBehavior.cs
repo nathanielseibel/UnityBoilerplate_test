@@ -57,15 +57,15 @@ public class BombBehavior : MonoBehaviour
 
     public void TakeDamage()
     {
-        Debug.Log("TakeDamage() was called!"); // ADD THIS
-        Debug.Log("Current bombHP: " + bombHP); // AND THIS
+        Debug.Log("TakeDamage() was called!"); 
+        Debug.Log("Current bombHP: " + bombHP); 
 
         bombHP--;
-        Debug.Log("HP after decrement: " + bombHP); // AND THIS
+        Debug.Log("HP after decrement: " + bombHP); 
 
         if (bombHP <= 0)
         {
-            Debug.Log("Trying to explode!"); // AND THIS
+            Debug.Log("Trying to explode!"); 
             Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
@@ -76,28 +76,27 @@ public class BombBehavior : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
 
         // Check if bomb hit the paddle
-        if (!hasHitPaddle && collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
-            hasHitPaddle = true;
-
-            // Shoot bomb back into the air everytime it hits the paddle
+            // Shoot bomb back into the air every time it hits the paddle
             if (rb != null)
             {
                 rb.velocity = new Vector3(rb.velocity.x, bounceForce, rb.velocity.z);
             }
 
-
-
-            //if player is moving, add some of that velocity to the bomb
+            // If player is moving, add some of that velocity to the bomb
             Rigidbody paddleRb = collision.gameObject.GetComponent<Rigidbody>();
             if (paddleRb != null)
             {
                 rb.velocity += new Vector3(paddleRb.velocity.x * 0.5f, 0, 0);
             }
 
-
-            // Re-enable collisions with bricks
-            EnableBrickCollisions();
+            // Only enable brick collisions on FIRST paddle hit
+            if (!hasHitPaddle)
+            {
+                hasHitPaddle = true;
+                EnableBrickCollisions();
+            }
         }
 
         //if it hits the "Wall" bounce the ball into the air

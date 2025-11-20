@@ -18,7 +18,7 @@ public class NewBallControl : MonoBehaviour
     Rigidbody rb;
 
     //speed for whatever direction the ball is moving
-    [SerializeField] private float ballSpeed = 0f;
+    public float ballSpeed = 0f;
     //variable for speedup timer
     [SerializeField] private float speedUpDuration = 2f;
 
