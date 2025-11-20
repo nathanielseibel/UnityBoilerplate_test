@@ -6,7 +6,7 @@ using UnityEngine;
 public class NewBallControl : MonoBehaviour
 {
     [Header("Launch Settings")]
-    [SerializeField] private float launchSpeed = 10f;
+    [SerializeField] private float launchSpeed = 0f;
     
 
     [Header("Paddle Reference")]
@@ -18,11 +18,18 @@ public class NewBallControl : MonoBehaviour
     Rigidbody rb;
 
     //speed for whatever direction the ball is moving
-    [SerializeField] private float ballSpeed = 35f;
+    [SerializeField] private float ballSpeed = 0f;
     //variable for speedup timer
     [SerializeField] private float speedUpDuration = 2f;
-    
 
+    [SerializeField] private float maxCharge = 100f;
+    [SerializeField] private float chargeRate = 50f;
+    private float currentCharge = 0f;
+
+    [SerializeField] private float minBallSpeed = 25f;  // Minimum speed after decay
+    [SerializeField] private float decayDuration = 5f;  // Time to reach min speed (seconds)
+
+    private float launchTime;  // Track when ball was launched
 
 
     void Start()
@@ -45,17 +52,42 @@ public class NewBallControl : MonoBehaviour
         // Launch the ball
         if (rb != null)
         {
+            ballSpeed = launchSpeed;
+            launchTime = Time.time;
             rb.velocity = launchDirection * launchSpeed;
             isLaunched = true;
         }
+
     }
     
     public void ResetBall()
     {
+        launchSpeed = 25f; //Default the launchspeed so the player can't just catch and release at full power.
+        currentCharge = 0f;
         isLaunched = false;
         rb.isKinematic = true;
         rb.velocity = Vector2.zero;
         transform.position = paddle.position + offsetFromPaddle;
+
+    }
+
+    public void ChargeBall()
+    {
+        if (isLaunched == false)
+        {
+            currentCharge += chargeRate * Time.deltaTime;
+            currentCharge = Mathf.Clamp(currentCharge, 0f, maxCharge);
+
+            // Scale launch speed with charge (10 at min, 20 at max)
+            launchSpeed = Mathf.Lerp(25f, 45f, currentCharge / maxCharge);
+
+        }
+        if (currentCharge >= maxCharge)
+        {
+            Debug.Log("Ball Charged!!!");
+            
+        }
+
     }
 
     void Update()
@@ -65,12 +97,25 @@ public class NewBallControl : MonoBehaviour
         {
             // Keep ball stuck to paddle
             transform.position = paddle.position + offsetFromPaddle;
-            // Check for spacebar press
+            //Charge the ball!
+            ChargeBall();
+            // Check for mouse button press
             if (Input.GetMouseButtonDown(0))
             {
                 LaunchBall();
             }
         }
+        else
+        {
+            // Calculate how much time has passed since launch
+            float timeSinceLaunch = Time.time - launchTime;
+            float t = Mathf.Clamp01(timeSinceLaunch / decayDuration);
+
+            // Lerp ballSpeed down over time
+            ballSpeed = Mathf.Lerp(launchSpeed, minBallSpeed, t);
+        }
+
+
 
         //apply a downward force to the ball constantly
         rb.AddForce(new Vector3(0, -2f, 0));
@@ -98,9 +143,5 @@ public class NewBallControl : MonoBehaviour
 
 
     }
-    private IEnumerator ResetBallSpeed()
-    {
-        yield return new WaitForSeconds(speedUpDuration);
-        ballSpeed = 35f;
-    }
+    
 }

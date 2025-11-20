@@ -425,6 +425,10 @@ MonoBehaviour:
   offsetFromPaddle: {x: 0, y: 0.8, z: 0}
   ballSpeed: 35
   speedUpDuration: 2
+  maxCharge: 100
+  chargeRate: 50
+  minBallSpeed: 25
+  decayDuration: 5
 --- !u!1 &335289457
 GameObject:
   m_ObjectHideFlags: 0
