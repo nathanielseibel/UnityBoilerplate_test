@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class NewBallControl : MonoBehaviour
 {
+
+    //ParticleEffect Object
+    [SerializeField] private GameObject chargedEffect;
+
     [Header("Launch Settings")]
     [SerializeField] private float launchSpeed = 0f;
     
@@ -68,6 +72,7 @@ public class NewBallControl : MonoBehaviour
         rb.isKinematic = true;
         rb.velocity = Vector2.zero;
         transform.position = paddle.position + offsetFromPaddle;
+        chargedEffect.SetActive(false);
 
     }
 
@@ -84,7 +89,8 @@ public class NewBallControl : MonoBehaviour
         }
         if (currentCharge >= maxCharge)
         {
-            Debug.Log("Ball Charged!!!");
+            chargedEffect.SetActive(true);
+            //Debug.Log("Ball Charged!!!");
             
         }
 
@@ -113,6 +119,11 @@ public class NewBallControl : MonoBehaviour
 
             // Lerp ballSpeed down over time
             ballSpeed = Mathf.Lerp(launchSpeed, minBallSpeed, t);
+
+            if (ballSpeed < 35f)
+            {
+                chargedEffect.SetActive(false);
+            }
         }
 
 

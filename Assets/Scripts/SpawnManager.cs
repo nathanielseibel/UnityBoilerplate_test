@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -220,8 +221,46 @@ public class SpawnManager : MonoBehaviour
             Debug.Log("Max speed bricks: " + maxSpeedBricks);
         }
 
-        //if a brick is destroyed, reduce total bricks alive
+        
+        StartCoroutine(UpdateTotals());
+    }
 
+    IEnumerator UpdateTotals()
+    {
+
+
+        // Wait for 5 seconds
+        yield return new WaitForSeconds(5f);
+        RecountAllBricks();
+
+        StartCoroutine(UpdateTotals());
+
+    }
+
+    public void RecountAllBricks()
+    {
+        // Find all objects with brick tags
+        GameObject[] regularBricks = GameObject.FindGameObjectsWithTag("Brick");
+        GameObject[] tankyBricks = GameObject.FindGameObjectsWithTag("TankyBrick");
+        GameObject[] superTankyBricks = GameObject.FindGameObjectsWithTag("SuperTankyBrick");
+        GameObject[] speedBricks = GameObject.FindGameObjectsWithTag("SpeedBrick");
+
+        // Update all the counts
+        maxRegularBricks = regularBricks.Length;
+        maxTankyBricks = tankyBricks.Length;
+        maxSuperTankyBricks = superTankyBricks.Length;
+        maxSpeedBricks = speedBricks.Length;
+
+        // Update total
+        totalBricksAlive = maxRegularBricks + maxTankyBricks + maxSuperTankyBricks + maxSpeedBricks;
+
+        // Log the results
+        Debug.Log($"=== BRICK RECOUNT ===");
+        Debug.Log($"Regular Bricks: {maxRegularBricks}");
+        Debug.Log($"Tanky Bricks: {maxTankyBricks}");
+        Debug.Log($"Super Tanky Bricks: {maxSuperTankyBricks}");
+        Debug.Log($"Speed Bricks: {maxSpeedBricks}");
+        Debug.Log($"TOTAL BRICKS: {totalBricksAlive}");
     }
 
 }
