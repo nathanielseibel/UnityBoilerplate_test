@@ -1,0 +1,49 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PowerUp_MultiBallpowerUp : MonoBehaviour
+{
+    [SerializeField] private float speed = 3f; // Speed at which the power-up falls
+    [SerializeField] private GameObject ballPrefab; // Reference to your ball prefab
+    [SerializeField] private int numberOfBallsToSpawn = 4; // How many extra balls to spawn
+
+    void Update()
+    {
+        // Move the power-up downwards
+        transform.Translate(Vector2.down * speed * Time.deltaTime);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        // Check if the power-up collides with the player's paddle
+        if (other.CompareTag("Paddle")) // Ensure your paddle has the tag "Paddle"
+        {
+            ActivateMultiBall();
+            Destroy(gameObject); // Destroy the power-up after activation
+        }
+    }
+
+    void ActivateMultiBall()
+    {
+        // Find the current ball in play (assuming there's always one)
+        GameObject currentBall = GameObject.FindGameObjectWithTag("Ball"); // Ensure your ball has the tag "Ball"
+        if (currentBall == null) return;
+
+        // Get the current ball's position and velocity
+        Vector3 currentBallPosition = currentBall.transform.position;
+        Vector3 currentBallVelocity = currentBall.GetComponent<Rigidbody>().velocity;
+
+        // Spawn extra balls
+        for (int i = 0; i < numberOfBallsToSpawn; i++)
+        {
+            GameObject newBall = Instantiate(ballPrefab, currentBallPosition, Quaternion.identity);
+            Rigidbody newBallRb = newBall.GetComponent<Rigidbody>();
+
+            // Give new balls a slightly varied velocity for spread
+            float angleOffset = (i % 2 == 0 ? 1 : -1) * (5f + i * 2f); // Example offset
+            Vector2 newVelocity = Quaternion.Euler(0, 0, angleOffset) * currentBallVelocity;
+            newBallRb.velocity = newVelocity.normalized * currentBallVelocity.magnitude;
+        }
+    }
+}
