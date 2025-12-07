@@ -4480,7 +4480,7 @@ PrefabInstance:
     - target: {fileID: 2134834888055579788, guid: aac7788f4c99196479dacab791c5e867, type: 3}
       propertyPath: gameOverManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1523466320}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aac7788f4c99196479dacab791c5e867, type: 3}
 --- !u!4 &1791565954 stripped
