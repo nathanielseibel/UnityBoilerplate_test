@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class NewBallControl : MonoBehaviour
 {
+    [SerializeField] private AudioClip throwSound;
+    [SerializeField] private AudioClip chargeSound;
+
+    private AudioSource audioSource;
 
     //ParticleEffect Object
     [SerializeField] private GameObject chargedEffect;
@@ -38,6 +42,7 @@ public class NewBallControl : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
         rb.AddForce(new Vector3(0, initialSpeed, 0));
         // Make sure ball doesn't move until launched
@@ -56,11 +61,16 @@ public class NewBallControl : MonoBehaviour
         // Launch the ball
         if (rb != null)
         {
+            
             ballSpeed = launchSpeed;
             launchTime = Time.time;
             rb.velocity = launchDirection * launchSpeed;
             isLaunched = true;
         }
+
+        
+
+
 
     }
     
@@ -73,6 +83,19 @@ public class NewBallControl : MonoBehaviour
         rb.velocity = Vector2.zero;
         transform.position = paddle.position + offsetFromPaddle;
         chargedEffect.SetActive(false);
+        StartCoroutine(chargeSoundDelay());
+
+
+
+    }
+
+    IEnumerator chargeSoundDelay()
+    {
+        // Wait for half seconds
+        yield return new WaitForSeconds(.7f);
+        audioSource.PlayOneShot(chargeSound, 4.0f);
+
+
 
     }
 
@@ -85,7 +108,7 @@ public class NewBallControl : MonoBehaviour
 
             // Scale launch speed with charge (10 at min, 20 at max)
             launchSpeed = Mathf.Lerp(25f, 45f, currentCharge / maxCharge);
-
+            
         }
         if (currentCharge >= maxCharge)
         {
@@ -93,7 +116,7 @@ public class NewBallControl : MonoBehaviour
             //Debug.Log("Ball Charged!!!");
             
         }
-
+        
     }
 
     void Update()
@@ -108,11 +131,14 @@ public class NewBallControl : MonoBehaviour
             // Check for mouse button press
             if (Input.GetMouseButtonDown(0))
             {
+                audioSource.PlayOneShot(throwSound, 3.0f);
                 LaunchBall();
+                
             }
         }
         else
         {
+            
             // Calculate how much time has passed since launch
             float timeSinceLaunch = Time.time - launchTime;
             float t = Mathf.Clamp01(timeSinceLaunch / decayDuration);

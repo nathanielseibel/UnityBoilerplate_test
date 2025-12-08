@@ -27,7 +27,6 @@ public class ExplosionBehavior : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(explosionSound, 3.0f);
-        Debug.Log("started");
         Destroy(this.gameObject, explosionDuration);
     }
 
