@@ -9,6 +9,8 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private GameObject dam;
     [SerializeField] private TextMeshProUGUI punText;
+    [SerializeField] private AudioClip gameOverSound;
+    private AudioSource audioSource;
 
     public int currentIndex = 0;
 
@@ -70,6 +72,7 @@ public class GameOverManager : MonoBehaviour
         //freeze the game with coroutine
         StartCoroutine(DelayFreeze());
         gameOverUI.SetActive(true);
+        
         Debug.Log("Game is over!");
 
         //change the pun text to one of the random indexes in the puns array
@@ -86,6 +89,8 @@ public class GameOverManager : MonoBehaviour
         // Wait for 3 seconds
         yield return new WaitForSeconds(2f);
         Time.timeScale = 0f;
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(gameOverSound, 5.0f);
         Debug.Log("Delayed action complete after 2 seconds!");
     }
 }
