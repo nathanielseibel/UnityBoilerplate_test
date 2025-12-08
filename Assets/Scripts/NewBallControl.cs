@@ -92,7 +92,7 @@ public class NewBallControl : MonoBehaviour
     IEnumerator chargeSoundDelay()
     {
         // Wait for half seconds
-        yield return new WaitForSeconds(.7f);
+        yield return new WaitForSeconds(.8f);
         audioSource.PlayOneShot(chargeSound, 4.0f);
 
 
