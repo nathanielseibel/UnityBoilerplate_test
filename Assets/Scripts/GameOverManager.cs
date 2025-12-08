@@ -11,6 +11,7 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI punText;
     [SerializeField] private AudioClip gameOverSound;
     private AudioSource audioSource;
+    public AudioSource backgroundMusic;
 
     public int currentIndex = 0;
 
@@ -72,7 +73,10 @@ public class GameOverManager : MonoBehaviour
         //freeze the game with coroutine
         StartCoroutine(DelayFreeze());
         gameOverUI.SetActive(true);
-        
+        if (backgroundMusic != null)
+        {
+            backgroundMusic.Stop();
+        }
         Debug.Log("Game is over!");
 
         //change the pun text to one of the random indexes in the puns array
