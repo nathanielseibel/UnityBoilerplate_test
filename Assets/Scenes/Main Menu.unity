@@ -962,8 +962,8 @@ GameObject:
   - component: {fileID: 1541308282}
   - component: {fileID: 1541308281}
   m_Layer: 0
-  m_Name: Tunes
-  m_TagString: Untagged
+  m_Name: Menu Music
+  m_TagString: Start Music
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

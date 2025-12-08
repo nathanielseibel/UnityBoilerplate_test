@@ -18,6 +18,7 @@ TagManager:
   - SuperTankyBrick
   - ScoreManager
   - Grabber
+  - Start Music
   layers:
   - Default
   - TransparentFX
