@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+
+[RequireComponent(typeof(AudioSource))]
 public class ExplosionBehavior : MonoBehaviour
 {
-    // References to explosion effect and sound
-    [SerializeField] private GameObject explosionEffect;
+    // References to explosion sound
     [SerializeField] private AudioClip explosionSound;
+    private AudioSource audioSource;
 
     // variable for explosion duration
     [SerializeField] private float explosionDuration = 5.0f;
@@ -23,6 +25,9 @@ public class ExplosionBehavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(explosionSound, 3.0f);
+        Debug.Log("started");
         Destroy(this.gameObject, explosionDuration);
     }
 
@@ -50,11 +55,7 @@ public class ExplosionBehavior : MonoBehaviour
         float elapsedTime = 0f;
         Vector3 initialScale = transform.localScale;
         Vector3 targetScale = initialScale * maxExplosionSize;
-        // Play explosion sound
-        if (explosionSound != null)
-        {
-            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
-        }
+        
         while (elapsedTime < explosionDuration)
         {
             transform.localScale = Vector3.Lerp(initialScale, targetScale, (elapsedTime / explosionDuration));
